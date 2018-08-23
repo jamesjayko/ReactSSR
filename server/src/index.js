@@ -1,4 +1,3 @@
-
 // ES5 -----
 // const express = require('express');
 // const React = require('react');
@@ -10,18 +9,30 @@
 // style of code in our server and client.
 import express from 'express';
 import React from 'react';
-import { renderToString } from "react-dom/server";
+import { renderToString } from 'react-dom/server';
 import Home from './client/components/Home';
 
 const app = express();
 
+app.use(express.static('public'));
+
 // this is a 'get' action from express server
 app.get('/', (req, res) => {
-    // nodejs does not recognize jsx. needs es5 syntax aka babel/bundle.
-    // look at webpack.server.js for solution to this problem.
-    const content = renderToString(<Home/>); 
+	// nodejs does not recognize jsx. needs es5 syntax aka babel/bundle.
+	// look at webpack.server.js for solution to this problem.
+	const content = renderToString(<Home />);
 
-    res.send(content);
+	const html = `
+        <html>
+            <head></head>
+            <body>
+                <div id='root'>${content}</div>
+                <script src="bundle.js"></script>
+            </body>
+        </html>
+    `;
+
+	res.send(html);
 });
 
 app.listen(3000, () => {
