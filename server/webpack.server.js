@@ -13,7 +13,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'build')
 	},
 
-	// tell webpack to run babel on every file it runs
+	// tell webpack to run babel on every file it runs... specifically .js files (regex) under 'test' 
 	module: {
 		rules: [
 			{
