@@ -7,8 +7,10 @@
 // ES6 -----
 // since we are running webpack and babel in our app, we can use ES6 syntax so that we are using the same
 // style of code in our server and client.
+import 'babel-polyfill'; // this is to fix a regeneratorRuntime error from async and await axios call in actions.
 import express from 'express';
 import renderer from './helpers/renderer';
+import createStore from './helpers/createStore'
 // import React from 'react';
 // import { renderToString } from 'react-dom/server';
 // import Home from './client/components/Home';
@@ -19,7 +21,11 @@ app.use(express.static('public'));
 
 // this is a 'get' action from express server
 app.get('*', (req, res) => {
-	res.send(renderer(req));
+    const store = createStore();
+
+
+
+	res.send(renderer(req, store));
 });
 
 app.listen(3000, () => {
